@@ -1,0 +1,18 @@
+[project]
+name = "hopfield-network-illustration"
+version = "0.1.0"
+description = "A pygame based illustration of Hopfield Networks"
+authors = [
+    {name = "Bora Candan",email = "1boracandan@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pygame-ce (>=2.5.5,<3.0.0)",
+    "pygame-gui (>=0.6.14,<0.7.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
