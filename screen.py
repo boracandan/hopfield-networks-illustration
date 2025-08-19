@@ -10,10 +10,15 @@ class GridSquare:
         self.surf = pygame.Surface(dimensions, pygame.SRCALPHA)
         self.rect = self.surf.get_frect(topleft=pos)
 
+        self.toggled = True
+
     def draw(self) -> None:
         self.display_surface.blit(self.surf, self.rect)
         pygame.draw.rect(self.surf, "black", self.surf.get_frect(topleft=(0,0)), 1)
-        
+
+    def toggle(self) -> None:
+        self.surf.fill("black" if self.toggled else "white")
+        self.toggled = not self.toggled
 
 class InputScreen:
     def __init__(self, screen_dimensions: Tuple[int, int], top_left: Tuple[int, int], grid_size: Tuple[int, int]) -> None:
@@ -29,5 +34,17 @@ class InputScreen:
         for row in self.grid_squares:
             for square in row:
                 square.draw()
+
+    def update(self) -> None:
+        mouse_pressed = pygame.mouse.get_just_pressed()
+        self._handle_mouse_left_click_just_pressed(mouse_pressed)
+
+    def _handle_mouse_left_click_just_pressed(self, mouse_pressed: tuple[bool, bool, bool]) -> None:
+        if mouse_pressed[0]: # If left clicked
+            mouse_pos = pygame.mouse.get_pos()
+            for row in self.grid_squares:
+                for grid_square in row:
+                    if grid_square.rect.collidepoint(mouse_pos):
+                        grid_square.toggle()
     
 

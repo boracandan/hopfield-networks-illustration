@@ -27,7 +27,7 @@ class HopfieldIllustrationApp:
                 
 
             # Update
-
+            self.input_screen.update()
             
             # Draw
             self.display_surface.fill("white")
