@@ -1,5 +1,6 @@
 import numpy as np
 from random import randint
+from scipy.special import logsumexp
 
 def calculate_energy(weights: np.ndarray, outputs: np.ndarray) -> float:
     """
@@ -63,5 +64,48 @@ def converge_network(weights: np.ndarray, outputs: np.ndarray) -> np.ndarray:
             break
 
     return outputs
+
+def converge_network_modern(patterns: np.ndarray, state: np.ndarray, max_steps: int = 30000) -> np.ndarray:
+    """
+    Run Discrete Modern Hopfield Network (Demircigil et al.) until convergence.
+    
+    patterns: (m, n) matrix of stored patterns (each column is one stored pattern)
+    state: (m,) initial state vector (values in {-1, +1})
+    max_steps: maximum number of update iterations
+    """
+    state = state.copy().astype(int).reshape(-1)  # ensure 1D array of ints
+    print(state.shape, patterns.shape)
+    m = len(state)
+
+    def calculate_energy_modern(patterns, state):
+        x = patterns.T @ state
+        return -logsumexp(x)   # stable computation of sum(exp(x))
+
+    for step in range(max_steps):
+        changed = False
+        indices = np.random.permutation(m)
+
+        for i in indices:
+            # Flip ith neuron to +1 or -1
+            state_pos = state.copy()
+            state_pos[i] = 1
+            state_neg = state.copy()
+            state_neg[i] = -1
+
+            # Compute energy difference
+            diff = -calculate_energy_modern(patterns, state_pos) + calculate_energy_modern(patterns, state_neg)
+
+            new_val = np.sign(diff)
+            if new_val == 0:  # resolve tie
+                new_val = -1
+
+            if new_val != state[i]:
+                state[i] = new_val
+                changed = True
+
+        if not changed:
+            break
+
+    return state
 
 

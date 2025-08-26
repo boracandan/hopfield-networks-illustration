@@ -4,7 +4,7 @@ import json
 import pygame
 
 from settings import *
-from algorithm import converge_network
+from algorithm import converge_network, converge_network_modern
 
 class GridSquare:
     def __init__(self, pos, dimensions) -> None:
@@ -89,22 +89,25 @@ class InputScreen:
 
     def _handle_key_just_pressed(self, key_just_pressed: pygame.key.ScancodeWrapper) -> None:
         if key_just_pressed[pygame.K_r]: # if "r" key is pressed 
-            with open("memory.json", "r") as f:
-                data = json.load(f)
+            # with open("memory.json", "r") as f:
+            #     data = json.load(f)
 
-            data.append({"H": self.current_state})
+            # data.append({"T": self.current_state})
             
             
 
             # print("Current length: ", len(data))
 
-            with open("memory.json", "w") as f:
-                json.dump(data, f, indent=4)
+            # with open("memory.json", "w") as f:
+            #     json.dump(data, f, indent=4)
 
             self.reset()
 
         if key_just_pressed[pygame.K_t]:
+            # self.reset()
+
             outputs = np.array(self.current_state)
-            converged_state = converge_network(weights=self.weight_matrix, outputs=outputs)
+            print(outputs, "aaaa")
+            converged_state = converge_network_modern(patterns=self.weight_matrix, state=outputs)
             print(converged_state)
             self.current_state = converged_state
