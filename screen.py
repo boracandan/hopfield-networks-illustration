@@ -89,18 +89,6 @@ class InputScreen:
 
     def _handle_key_just_pressed(self, key_just_pressed: pygame.key.ScancodeWrapper) -> None:
         if key_just_pressed[pygame.K_r]: # if "r" key is pressed 
-            # with open("memory.json", "r") as f:
-            #     data = json.load(f)
-
-            # data.append({"T": self.current_state})
-            
-            
-
-            # print("Current length: ", len(data))
-
-            # with open("memory.json", "w") as f:
-            #     json.dump(data, f, indent=4)
-
             self.reset()
 
         if key_just_pressed[pygame.K_t]:

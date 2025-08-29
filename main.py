@@ -6,6 +6,7 @@ import numpy as np
 from settings import *
 from screen import InputScreen
 from algorithm import calculate_weight_matrix
+from ui import UI
 
 class HopfieldIllustrationApp:
     def __init__(self) -> None:
@@ -19,13 +20,6 @@ class HopfieldIllustrationApp:
         with open("memory.json") as json_file:
             memories = json.load(json_file)
         
-        # i = 0
-        # for memory in memories:
-        #     print(next(iter(memory.values())))
-        #     i += 1
-        # print("a", i)
-
-        # print(memories)
         patterns = np.column_stack([next(iter(memory.values())) for memory in memories])
         print(patterns[:][:], patterns.shape)
 
@@ -36,6 +30,7 @@ class HopfieldIllustrationApp:
 
         # UI
         self.uiManager = pygame_gui.UIManager(window_resolution=(DISPLAY_WIDTH, DISPLAY_HEIGHT))
+        self.ui = UI(rect=pygame.Rect(698, -2, 205, 705), manager=self.uiManager, memory_num=10)
 
         # Start game loop
         self.run()
@@ -49,6 +44,7 @@ class HopfieldIllustrationApp:
                     self.running = False
 
                 self.uiManager.process_events(event)
+                self.ui.process_event(event)
                 
 
             # Update
