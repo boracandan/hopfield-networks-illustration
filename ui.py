@@ -50,8 +50,23 @@ class UI:
     def __init__(self, rect: pygame.FRect, manager: pg.UIManager, memory_num: int) -> None:
         self.width, self.height = rect.size
         
+        panel_rect = rect.copy()
+        panel_rect.height -= int(self.height * 0.075)
         self.ui_panel = pg.elements.UIPanel(
-            relative_rect=rect,
+            relative_rect=panel_rect,
+            manager=manager
+        )
+
+        # Mode Select Buttons
+        self.pert_mode_button = UIButton(
+            relative_rect=pygame.FRect(panel_rect.bottomleft - pygame.Vector2(0, 4), (self.width * .5, self.height * .08)),
+            text="Perturb Mode",
+            manager=manager
+        )
+
+        self.recog_mode_button = UIButton(
+            relative_rect=pygame.FRect(self.pert_mode_button.rect.topright - pygame.Vector2(4, 0), (self.width * .52, self.height * .08)),
+            text="Recog Mode",
             manager=manager
         )
 
