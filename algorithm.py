@@ -36,10 +36,9 @@ def calculate_weight_matrix(memories: list[dict[str, list[int]]]) -> np.ndarray:
 
 def converge_network(weights: np.ndarray, outputs: np.ndarray) -> np.ndarray:
     """
-    Run Hopfield network until convergence (energy change ≤ e) or max_steps reached.
+    Run Classical Hopfield network until convergence (energy change ≤ e) or max_steps reached.
     """
     max_steps = 30000
-    e = 1e-12
 
     # Iterative Updates
     step = 0

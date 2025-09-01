@@ -18,19 +18,24 @@ class HopfieldIllustrationApp:
 
         # Load the memory file
         with open("memory.json") as json_file:
-            memories = json.load(json_file)
+            letter_memories = json.load(json_file)
+
+        with open("photo_memory.json") as json_file:
+            photo_memories = [next(iter(memory.values())) for memory in json.load(json_file)]
         
-        patterns = np.column_stack([next(iter(memory.values())) for memory in memories])
+        # patterns = np.column_stack([next(iter(memory.values())) for memory in letter_memories])
+        patterns = np.column_stack(photo_memories)
+
         print(patterns[:][:], patterns.shape)
 
         # weight_matrix = calculate_weight_matrix(memories=memories)
 
-        # Input Screen
-        self.input_screen = InputScreen(screen_dimensions=(700, 700), top_left=(0, 0), grid_size=(64, 64), weight_matrix=patterns)
-
         # UI
         self.uiManager = pygame_gui.UIManager(window_resolution=(DISPLAY_WIDTH, DISPLAY_HEIGHT))
-        self.ui = UI(rect=pygame.Rect(698, -2, 205, 705), manager=self.uiManager, memory_num=10)
+        self.ui = UI(rect=pygame.Rect(698, -2, 205, 705), manager=self.uiManager, memory_num=len(photo_memories))
+
+        # Input Screen
+        self.input_screen = InputScreen(screen_dimensions=(700, 700), top_left=(0, 0), grid_size=(64, 64), weight_matrix=patterns, ui=self.ui)
 
         # Start game loop
         self.run()
@@ -42,9 +47,10 @@ class HopfieldIllustrationApp:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-
+                
                 self.uiManager.process_events(event)
                 self.ui.process_event(event)
+                self.input_screen.handle_event(event)
                 
 
             # Update

@@ -2,8 +2,10 @@ from typing import Tuple
 import numpy as np
 import json
 import pygame
+import pygame_gui
 
 from settings import *
+from ui import UI
 from algorithm import converge_network, converge_network_modern
 
 class GridSquare:
@@ -25,7 +27,7 @@ class GridSquare:
 
 
 class InputScreen:
-    def __init__(self, screen_dimensions: Tuple[int, int], top_left: Tuple[int, int], grid_size: Tuple[int, int], weight_matrix = np.ndarray) -> None:
+    def __init__(self, screen_dimensions: Tuple[int, int], top_left: Tuple[int, int], grid_size: Tuple[int, int], weight_matrix: np.ndarray, ui: UI) -> None:
         self.screen_width, self.screen_height = screen_dimensions
         self.top_left = pygame.Vector2(top_left)
         self.grid_width, self.grid_height = grid_size
@@ -34,6 +36,8 @@ class InputScreen:
         self.grid_squares = [[GridSquare(self.top_left + pygame.Vector2(grid_square_width * i, grid_square_height * j), (grid_square_width, grid_square_height)) for i in range(self.grid_width)] for j in range(self.grid_height)]
 
         self.weight_matrix = weight_matrix
+
+        self.ui = ui
 
 
     @property
@@ -69,6 +73,12 @@ class InputScreen:
         self._handle_mouse_left_click_just_pressed(mouse_just_pressed)
         self._handle_key_just_pressed(key_just_pressed)
         self._handle_mouse_left_click_pressed(mouse_pressed)
+
+    def handle_event(self, event: pygame.Event):
+        if event.type == pygame_gui.UI_BUTTON_PRESSED:
+            if event.ui_element in self.ui.memory_buttons:
+                idx = self.ui.memory_buttons.index(event.ui_element)
+                self.current_state = self.weight_matrix[:, idx].reshape(-1)
 
     def _handle_mouse_left_click_just_pressed(self, mouse_just_pressed: tuple[bool, bool, bool]) -> None:
         if mouse_just_pressed[0]: # If left clicked
