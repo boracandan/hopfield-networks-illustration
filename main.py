@@ -31,7 +31,7 @@ class HopfieldIllustrationApp:
         # weight_matrix = calculate_weight_matrix(memories=memories)
 
         # UI
-        self.uiManager = pygame_gui.UIManager(window_resolution=(DISPLAY_WIDTH, DISPLAY_HEIGHT))
+        self.uiManager = pygame_gui.UIManager(window_resolution=(DISPLAY_WIDTH, DISPLAY_HEIGHT), theme_path="theme.json")
         self.ui = UI(rect=pygame.Rect(698, -2, 205, 705), manager=self.uiManager, memory_num=len(photo_memories))
 
         # Input Screen

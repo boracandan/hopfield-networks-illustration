@@ -132,6 +132,45 @@ class UI:
             container=self.pert_mode_panel,
         )
 
+        self.color_label = pg.elements.UILabel(
+            relative_rect=pygame.FRect((self.width * .08, self.height * 0.47), (self.width * .55, self.height * .05)),
+            manager=manager,
+            container=self.pert_mode_panel,
+            text="Brush Color:        "
+        )
+
+        self.black_button = pg.elements.UIButton(
+                relative_rect=pygame.FRect((self.width * .08, self.height * 0.52), (self.width * .2, self.height * .05)),
+                manager=manager,
+                container=self.pert_mode_panel,
+                text=" ",
+                object_id=pg.core.ObjectID(object_id="black_button")
+        )
+        
+        self.white_button =  pg.elements.UIButton(
+                relative_rect=pygame.FRect((self.width * .35, self.height * 0.52), (self.width * .2, self.height * .05)),
+                manager=manager,
+                container=self.pert_mode_panel,
+                text=" ",
+                object_id=pg.core.ObjectID(object_id="white_button")
+        )
+
+        self.brush_size_label = pg.elements.UILabel(
+            relative_rect=pygame.FRect((self.width * .08, self.height * 0.57), (self.width * .55, self.height * .05)),
+            manager=manager,
+            container=self.pert_mode_panel,
+            text="Brush Size:          "
+        )
+
+        self.brush_size_slider = pg.elements.UIHorizontalSlider(
+            relative_rect=pygame.FRect((self.width * .08, self.height * 0.61), (self.width * .8, self.height * .04)),
+            manager=manager,
+            start_value=0,
+            value_range=(0, 100),
+            container=self.pert_mode_panel
+        )
+
+
 
 
         #-----Recognizing Mode UI------#
